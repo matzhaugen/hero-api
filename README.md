@@ -1,1 +1,1 @@
-# heri-api
+# hero-api

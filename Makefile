@@ -3,8 +3,8 @@ pg:
 	docker run \
     --name pg \
     -e POSTGRES_PASSWORD=one \
-    --network host \
-    -e DB_HOST=docker.for.mac.host.internal \
+    -p 5432:5432 \
+    -e DB_HOST=host.docker.internal \
    	-v `pwd`/init-pg-db.sql:/docker-entrypoint-initdb.d/init-user-db.sql \
     postgres:11
 setup:

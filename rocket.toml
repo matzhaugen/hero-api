@@ -1,0 +1,2 @@
+[global.databases]
+psql_logs = { url = "postgresql://hero:one@127.0.0.1:5432/heroes" }

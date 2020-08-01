@@ -1,9 +1,9 @@
 table! {
     heroes (id) {
-        id -> Nullable<Integer>,
+        id -> Nullable<Int4>,
         name -> Varchar,
         identity -> Varchar,
         hometown -> Varchar,
-        age -> Integer,
+        age -> Int4,
     }
 }

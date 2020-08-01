@@ -1,10 +1,11 @@
-use diesel;
 use diesel::prelude::*;
-use diesel::mysql::MysqlConnection;
-use schema::heroes;
+use diesel::PgConnection as Connection;
+use serde_derive::{Serialize, Deserialize};
+use crate::schema::heroes;
+
 
 #[table_name = "heroes"]
-#[derive(Serialize, Deserialize, Queryable, Insertable)]
+#[derive(Serialize, Deserialize, Queryable, Insertable, AsChangeset)]
 pub struct Hero {
     pub id: Option<i32>,
     pub name: String,
@@ -14,7 +15,7 @@ pub struct Hero {
 }
 
 impl Hero {
-    pub fn create(hero: Hero, connection: &MysqlConnection) -> Hero {
+    pub fn create(hero: Hero, connection: &Connection) -> Hero {
         diesel::insert_into(heroes::table)
             .values(&hero)
             .execute(connection)
@@ -23,15 +24,15 @@ impl Hero {
         heroes::table.order(heroes::id.desc()).first(connection).unwrap()
     }
 
-    pub fn read(connection: &MysqlConnection) -> Vec<Hero> {
+    pub fn read(connection: &Connection) -> Vec<Hero> {
         heroes::table.order(heroes::id.asc()).load::<Hero>(connection).unwrap()
     }
 
-    pub fn update(id: i32, hero: Hero, connection: &MysqlConnection) -> bool {
+    pub fn update(id: i32, hero: Hero, connection: &Connection) -> bool {
         diesel::update(heroes::table.find(id)).set(&hero).execute(connection).is_ok()
     }
 
-    pub fn delete(id: i32, connection: &MysqlConnection) -> bool {
+    pub fn delete(id: i32, connection: &Connection) -> bool {
         diesel::delete(heroes::table.find(id)).execute(connection).is_ok()
     }
 }
